@@ -44,4 +44,4 @@ class Figure:
         self.rotation = (self.rotation + 1) % len(self.figures[self.type])
         
 class Game:
-    
+    pass
