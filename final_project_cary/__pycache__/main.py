@@ -11,6 +11,8 @@
 # Make score go up 1 when line disappears, more points for tetris
 # Make platforms rotate
 # harder levels (faster falling speed)
+# more levels 
+
 
 
 import pygame
