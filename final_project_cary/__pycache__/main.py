@@ -15,7 +15,7 @@
 
 
 
-import pygame
+import pygame as pg
 import random
 
 
@@ -46,4 +46,47 @@ class Figure:
         self.rotation = (self.rotation + 1) % len(self.figures[self.type])
         
 class Game:
-    pass
+    WIDTH = 600
+    HEIGHT = 600
+    FPS = 30
+    def __ini__ (self):
+        # init pygame and create a window
+        pg.init()
+        pg.mixer.init()
+        self.screen = pg.display.set_mode((self.WIDTH, self.HEIGHT))
+        pg.display.set_caption("My Game...")
+        self.clock = pg.time.Clock()
+        self.running = True
+
+    def new(self): 
+            # create a group for all sprites
+            self.score = 0
+            self.all_figures = pg.sprite.Group()
+
+            # prints platforms
+                # instantiation of the Platform class
+            fig = Figure
+            self.all_platforms.add(fig)
+
+            self.run()
+
+    def run(self):
+        self.playing = True
+        while self.playing:
+            self.clock.tick(self.FPS)
+            self.events()
+
+    def events(self):
+        for event in pg.event.get():
+        # check for closed window
+            if event.type == pg.QUIT:
+                if self.playing:
+                    self.playing = False
+                self.running = False
+
+
+g = Game()
+while g.running:
+    g.new()
+
+pg.quit()
