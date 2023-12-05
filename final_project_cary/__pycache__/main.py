@@ -3,17 +3,15 @@
 # https://levelup.gitconnected.com/writing-tetris-in-python-2a16bddb5318 
 
 # Goals:
-# format in grid
 # Make platforms that are different shapes
 # Make platforms constantly move down
 # Make platfroms stop on other platforms/the bottom of the window
 # Make line disappear once entire line is filled
 # Make score go up 1 when line disappears, more points for tetris
 # Make platforms rotate
-# harder levels (faster falling speed)
-# more levels 
+# harder/more levels (faster falling speed)
 
-
+BLACK = (0,0,0)
 
 import pygame as pg
 import random
@@ -49,7 +47,7 @@ class Game:
     WIDTH = 600
     HEIGHT = 600
     FPS = 30
-    def __ini__ (self):
+    def __init__ (self):
         # init pygame and create a window
         pg.init()
         pg.mixer.init()
@@ -63,10 +61,7 @@ class Game:
             self.score = 0
             self.all_figures = pg.sprite.Group()
 
-            # prints platforms
-                # instantiation of the Platform class
-            fig = Figure
-            self.all_platforms.add(fig)
+            # instantiation of Figure class
 
             self.run()
 
@@ -84,6 +79,22 @@ class Game:
                     self.playing = False
                 self.running = False
 
+    def draw(self):
+            ############ Draw ################
+            # draw the background screen
+            self.screen.fill(BLACK)
+            # draw all sprites
+            self.all_sprites.draw(self.screen)
+
+
+    def draw_text(self, text, size, color, x, y):
+        font_name = pg.font.match_font('arial')
+        font = pg.font.Font(font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x,y)
+        self.screen.blit(text_surface, text_rect)
+    
 
 g = Game()
 while g.running:
