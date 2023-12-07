@@ -11,17 +11,26 @@
 # Make platforms rotate
 # harder/more levels (faster falling speed)
 
-BLACK = (0,0,0)
-
 import pygame as pg
 import random
 
+WIDTH = 600
+HEIGHT = 600
+FPS = 30
 
-# figure class
-class Figure:
-    def __init__(self, x, y):
-        # defines shapes using 
-        self.figures = [
+BLACK = (0,0,0)
+
+colors = [
+    (255,0,0),
+    (0,255,0),
+    (0,0,255),
+    (255,255,0),
+    (255,140,0),
+    (128,0,128),
+    (0,255,255),
+]
+
+FIGURE_LIST = [
         [[1, 5, 9, 13], [4, 5, 6, 7]],
         [[4, 5, 9, 10], [2, 6, 5, 9]],
         [[6, 7, 9, 10], [1, 5, 6, 10]],
@@ -32,9 +41,15 @@ class Figure:
         [[1, 5, 6, 10], [1, 2, 4, 5]],
         [[1, 4, 5, 8], [0, 1, 5, 6]]
         ]
+
+# figure class
+class Figure:
+    def __init__(self, x, y):
+        # defines shapes using 
         self.x = x
         self.y = y
-        self.type = random.randint(0, len(self.figures) - 1)
+        self.type = random.randint(0, len(FIGURE_LIST) - 1)
+        self.color = random.randint(1, len(colors) - 1)
         self.rotation = 0
 
     def piece_image(self):
@@ -42,6 +57,13 @@ class Figure:
     
     def rotation(self):
         self.rotation = (self.rotation + 1) % len(self.figures[self.type])
+
+    def update(self):
+        self.speed = 5
+        self.rect.y += self.speed
+        if self.rect.y + self.rect.h > HEIGHT or self.rect.y < 0:
+            self.speed = -self.speed
+
         
 class Game:
     WIDTH = 600
@@ -57,13 +79,20 @@ class Game:
         self.running = True
 
     def new(self): 
-            # create a group for all sprites
-            self.score = 0
-            self.all_figures = pg.sprite.Group()
+        # create a group for all sprites
+        self.score = 0
+        self.all_sprites = pg.sprite.Group()
+        self.all_figures = pg.sprite.Group()
 
+        for f in FIGURE_LIST:
             # instantiation of Figure class
+            fig = Figure(*f)
+            self.all_figures.add(fig)
 
-            self.run()
+        self.run()
+    
+    def new_figure(self):
+        self.figure = Figure(3,0)
 
     def run(self):
         self.playing = True
