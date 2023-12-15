@@ -5,7 +5,7 @@
 # Goals:
 # Make platforms that are different shapes
 # Make platforms constantly move down
-# Make platfroms stop on other platforms/the bottom of the window
+# Make platforms stop on other platforms/the bottom of the window
 # Make line disappear once entire line is filled
 # Make score go up 1 when line disappears, more points for tetris
 # Make platforms rotate
@@ -14,49 +14,115 @@
 import pygame as pg
 import random
 
-WIDTH = 600
-HEIGHT = 600
-FPS = 30
+# Screen dimensions
+WIDTH, HEIGHT = 800, 600
+GRID_SIZE = 25
 
-BLACK = (0,0,0)
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
+YELLOW = (255,255,0)
+ORANGE = (255,165,0)
+PURPLE = (128,0,128)
+COLORS = [RED, BLUE, GREEN, ORANGE, YELLOW, PURPLE]
 
-colors = [
-    (255,0,0),
-    (0,255,0),
-    (0,0,255),
-    (255,255,0),
-    (255,140,0),
-    (128,0,128),
-    (0,255,255),
+# Tetris pieces
+FIGURES = [
+    [
+        ['.....',
+         '.....',
+         '.....',
+         'OOOO.',
+         '.....'],
+        ['.....',
+         '..O..',
+         '..O..',
+         '..O..',
+         '..O..']
+    ],
+    [
+        ['.....',
+         '.....',
+         '..O..',
+         '.OOO.',
+         '.....'],
+        ['.....',
+         '..O..',
+         '.OO..',
+         '..O..',
+         '.....'],
+        ['.....',
+         '.....',
+         '.OOO.',
+         '..O..',
+         '.....'],
+        ['.....',
+         '..O..',
+         '..OO.',
+         '..O..',
+         '.....']
+    ],
+    [
+        [
+         '.....',
+         '.....',
+         '..OO.',
+         '.OO..',
+         '.....'],
+        ['.....',
+         '.....',
+         '.OO..',
+         '..OO.',
+         '.....'],
+        ['.....',
+         '.O...',
+         '.OO..',
+         '..O..',
+         '.....'],
+        ['.....',
+         '..O..',
+         '.OO..',
+         '.O...',
+         '.....']
+    ],
+    [
+        ['.....',
+         '..O..',
+         '..O.',
+         '..OO.',
+         '.....'],
+        ['.....',
+         '...O.',
+         '.OOO.',
+         '.....',
+         '.....'],
+        ['.....',
+         '.OO..',
+         '..O..',
+         '..O..',
+         '.....'],
+        ['.....',
+         '.....',
+         '.OOO.',
+         '.O...',
+         '.....']
+    ],
 ]
 
-FIGURE_LIST = [
-        [[1, 5, 9, 13], [4, 5, 6, 7]],
-        [[4, 5, 9, 10], [2, 6, 5, 9]],
-        [[6, 7, 9, 10], [1, 5, 6, 10]],
-        [[1, 2, 5, 9], [0, 4, 5, 6], [1, 5, 9, 8], [4, 5, 6, 10]],
-        [[1, 2, 6, 10], [5, 6, 7, 9], [2, 6, 10, 11], [3, 5, 6, 7]],
-        [[1, 4, 5, 6], [1, 4, 5, 9], [4, 5, 6, 9], [1, 5, 6, 9]],
-        [[1, 2, 5, 6]],
-        [[1, 5, 6, 10], [1, 2, 4, 5]],
-        [[1, 4, 5, 8], [0, 1, 5, 6]]
-        ]
+
 
 # figure class
 class Figure:
-    def __init__(self, x, y):
+    def __init__(self, x, y, shape):
         # defines shapes using 
         self.x = x
         self.y = y
-        self.type = random.randint(0, len(FIGURE_LIST) - 1)
-        self.color = random.randint(1, len(colors) - 1)
+        self.shape = shape
+        self.color = random.choice(COLORS)
         self.rotation = 0
-
-    def piece_image(self):
-        return self.figures[self.type][self.rotation]
-    
-    def rotation(self):
-        self.rotation = (self.rotation + 1) % len(self.figures[self.type])
 
     def update(self):
         self.speed = 5
@@ -66,67 +132,14 @@ class Figure:
 
         
 class Game:
-    WIDTH = 600
-    HEIGHT = 600
-    FPS = 30
-    def __init__ (self):
-        # init pygame and create a window
-        pg.init()
-        pg.mixer.init()
-        self.screen = pg.display.set_mode((self.WIDTH, self.HEIGHT))
-        pg.display.set_caption("My Game...")
-        self.clock = pg.time.Clock()
-        self.running = True
-
-    def new(self): 
-        # create a group for all sprites
+    def __init__ (self, width, height):
+        self.height = height
+        self.width = width
+        self.grid = [[0 for _ in range(width)] for _ in range(height)]
+        self.current_figure = self.new_figure()
         self.score = 0
-        self.all_sprites = pg.sprite.Group()
-        self.all_figures = pg.sprite.Group()
 
-        for f in FIGURE_LIST:
-            # instantiation of Figure class
-            fig = Figure(*f)
-            self.all_figures.add(fig)
-
-        self.run()
-    
     def new_figure(self):
-        self.figure = Figure(3,0)
+        shape = random.choice(FIGURES)
+        return Figure(self.width // 2,0, shape)
 
-    def run(self):
-        self.playing = True
-        while self.playing:
-            self.clock.tick(self.FPS)
-            self.events()
-
-    def events(self):
-        for event in pg.event.get():
-        # check for closed window
-            if event.type == pg.QUIT:
-                if self.playing:
-                    self.playing = False
-                self.running = False
-
-    def draw(self):
-            ############ Draw ################
-            # draw the background screen
-            self.screen.fill(BLACK)
-            # draw all sprites
-            self.all_sprites.draw(self.screen)
-
-
-    def draw_text(self, text, size, color, x, y):
-        font_name = pg.font.match_font('arial')
-        font = pg.font.Font(font_name, size)
-        text_surface = font.render(text, True, color)
-        text_rect = text_surface.get_rect()
-        text_rect.midtop = (x,y)
-        self.screen.blit(text_surface, text_rect)
-    
-
-g = Game()
-while g.running:
-    g.new()
-
-pg.quit()
