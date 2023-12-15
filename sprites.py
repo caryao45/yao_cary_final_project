@@ -95,12 +95,29 @@ class Hoop(Sprite):
 
 # ball class
 class Ball(Sprite):
-    def __init__(self,x,y):
+    def __init__(self, x, y, kind):
         Sprite.__init__(self)
         self.image = pg.image.load(os.path.join(img_folder, 'basketball.jpg')).convert()
         self.image.set_colorkey(WHITE)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.kind = kind
+        self.pos = vec(500, 350)
+        self.vel = vec(0,0)
+        self.acc = vec(0,0)
     def update(self):
-        pass
+        self.acc = vec(0,PLAYER_GRAV)
+        # if friction - apply here
+        self.acc.x += self.vel.x * -PLAYER_FRIC
+        # self.acc.y += self.vel.y * -0.3
+        # equations of motion
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+        self.rect.midbottom = self.pos
+        # sends player to other side when leaving the screen 
+        # got inspiration from this video: https://www.youtube.com/watch?v=QuM-jEQ7fAA&ab_channel=CodingWithRuss 
+        if self.rect.left < 0:
+            self.pos.x = WIDTH - self.rect.right
+        if self.rect.right > WIDTH:
+            self.pos.x = WIDTH - self.rect.left

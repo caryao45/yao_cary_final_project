@@ -45,12 +45,12 @@ if game_over == False:
             self.all_sprites = pg.sprite.Group()
             self.all_platforms = pg.sprite.Group()
             self.all_hoops = pg.sprite.Group()
-            self.all_balls = pg.sprite.Group()
             # instantiate classes
             self.player = Player(self)
-            # self.ball = Ball(self)
+            self.ball = Ball(360, 350, "normal")
             # add instances to groups
             self.all_sprites.add(self.player)
+            self.all_sprites.add(self.ball)
 
             # prints platforms
             for p in PLATFORM_LIST:
@@ -64,12 +64,6 @@ if game_over == False:
                 hoop = Hoop(*h)
                 self.all_sprites.add(hoop)
                 self.all_hoops.add(hoop)
-
-            for b in BALL_PLACEMENT:
-                # instantiation of the Ball class
-                ball = Ball(*b)
-                self.all_sprites.add(ball)
-                self.all_balls.add(ball)
 
             self.run()
 
@@ -92,13 +86,17 @@ if game_over == False:
                     self.player.vel.y = 0
                     self.player.vel.x = hits[0].speed*1.5
 
-            bhits = pg.sprite.spritecollide(self.player, self.all_balls, False)
-            if bhits:
-                self.all_balls.pos = (self.player.pos.x,self.player.pos.y + 32)
+            # this is what prevents the player from falling through the platform when falling down...
+            if self.ball.vel.y >= 0:
+                bhits = pg.sprite.spritecollide(self.ball, self.all_platforms, False)
+                if bhits:
+                    self.ball.pos.y = hits[0].rect.top
+                    self.ball.vel.y = 0
+                    self.ball.vel.x = bhits[0].speed*1.5
 
-            chits = pg.sprite.spritecollide(self.all_hoops, self.all_balls, False)
-            if chits:
-                self.score += 1
+            # chits = pg.sprite.spritecollide(self.all_hoops, self.all_balls, False)
+            # if chits:
+            #     self.score += 1
 
 
         def events(self):
