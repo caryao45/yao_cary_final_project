@@ -1,44 +1,35 @@
 # Fall2023_final_project
 
-Make Tetris.
+Make a basketball game.
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+Make it so that when the player touches the ball, the ball follows the player and when a button is pressed, the ball is let go and forms a shooting arc towards the basket. If the ball goes into the basket, the player scores a point. 
 
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* Download Windows 10, as well as pygame
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* Copy and paste off Github
+* Get all 3 files, including main, settings, and sprites, as well as the image folder
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
+* Press play button on vs code
 
 ## Help
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+Any problems let me know
 
 ## Authors
 
-Contributors names and contact info
+Cary Yao
+[@hard_carzy](hhttps://www.instagram.com/hard_carzy/)
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
 
 ## Version History
 
@@ -54,5 +45,4 @@ This project is licensed under the [MIT] License - see the LICENSE.md file for d
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [FIgure Shapes](https://levelup.gitconnected.com/writing-tetris-in-python-2a16bddb5318)
+None so far

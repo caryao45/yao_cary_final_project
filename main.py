@@ -1,23 +1,13 @@
 # This file was created by Cary Yao
 # Sources: 
-
+# My old mygame code
 
 # Goals:
-
-# content from kids can code: http://kidscancode.org/blog/
-# got inspiration for game over from: https://www.youtube.com/watch?v=QuM-jEQ7fAA&ab_channel=CodingWithRuss 
-# Got a little help from my dad
-# import libraries and modules
-
-# Design Goals:
-# Make platformer game 
-# Allow player to move and collect coins
-# Make score go up when coin is collected
-# Make hitpoints go down when collide with mobs
-# Make player not fall off map
-# Make game over screen once hitpoints zero or score is ten
-# Make play again - figure out how to respawn coins (Kinda)
-# Add timer to increase difficulty (Didn't do)
+# Make hoop and ball with all the proper attributes
+# Make ball follow player when touched
+# Make ball go in shooting motion after released from player
+# If ball goes in net, add to score
+# Add second player and hoop for multiplayer
 
 import pygame as pg
 from pygame.sprite import Sprite
@@ -58,7 +48,7 @@ if game_over == False:
             self.all_balls = pg.sprite.Group()
             # instantiate classes
             self.player = Player(self)
-            self.ball = Ball(self)
+            # self.ball = Ball(self)
             # add instances to groups
             self.all_sprites.add(self.player)
 
@@ -102,13 +92,14 @@ if game_over == False:
                     self.player.vel.y = 0
                     self.player.vel.x = hits[0].speed*1.5
 
-            # this is what prevents the ball from falling through the platform when falling down...
-            if self.ball.vel.y >= 0:
-                bhits = pg.sprite.spritecollide(self.ball, self.all_platforms, False)
-                if bhits:
-                    self.ball.pos.y = hits[0].rect.top
-                    self.ball.vel.y = 0
-                    self.ball.vel.x = hits[0].speed*1.5
+            bhits = pg.sprite.spritecollide(self.player, self.all_balls, False)
+            if bhits:
+                self.all_balls.pos = (self.player.pos.x,self.player.pos.y + 32)
+
+            chits = pg.sprite.spritecollide(self.all_hoops, self.all_balls, False)
+            if chits:
+                self.score += 1
+
 
         def events(self):
             for event in pg.event.get():
