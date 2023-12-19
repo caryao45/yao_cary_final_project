@@ -70,7 +70,7 @@ class Game:
         # Check for collision between ball and hoop, adds to score and resets ball position
         if pg.sprite.spritecollide(self.ball, self.all_hoops, False):
             self.player.score += 1
-            self.ball.rect.center = (WIDTH // 2, 400)
+            self.ball.rect.center = (WIDTH // 2, 10)
             if self.player.score > 10:
                 self.player.score = 10
 
