@@ -1,6 +1,6 @@
 # This file was created by Cary Yao
 # Sources: 
-# My old mygame code
+# Chris Bradfield: http://kidscancode.org/blog/
 
 # Goals:
 # Make hoop and ball with all the proper attributes
@@ -8,6 +8,7 @@
 # Make the ball move forward
 # If the ball collides with hoop, add to score; max score is 10
 # Play again
+# More levels with more hoops
 
 import pygame as pg
 from pygame.sprite import Sprite
