@@ -32,7 +32,8 @@ Cary Yao
 
 
 ## Version History
-
+* 0.3
+    * Changed strucure of game and completed most of goals
 * 0.2
     * Various bug fixes and optimizations
     * See [commit change]() or See [release history]()
