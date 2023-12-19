@@ -4,10 +4,10 @@
 
 # Goals:
 # Make hoop and ball with all the proper attributes
-# Make ball follow player when touched
-# Make ball go in shooting motion after released from player
-# If ball goes in net, add to score
-# Add second player and hoop for multiplayer
+# Make the ball respawn at the player
+# Make the ball move forward
+# If the ball collides with hoop, add to score; max score is 10
+# Play again
 
 import pygame as pg
 from pygame.sprite import Sprite
